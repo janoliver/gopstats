@@ -1,6 +1,6 @@
 tests
 *.sqlite3
-.idea
+.idea/
 
 
 ### Go template
