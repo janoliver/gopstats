@@ -2,10 +2,9 @@
 Description=Gopstats (Go Stats Milter)
 
 [Service]
-Type=notify
+Type=simple
 ExecStart=/root/gopstats -port=9929 -db-path=/root/gopstats.sqlite3
-WatchdogSec=30s
-Restart=on-failure
+Restart=always
 
 [Install]
 WantedBy=multi-user.target

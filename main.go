@@ -37,7 +37,8 @@ CREATE TABLE IF NOT EXISTS smtp_record (
     mid TEXT NOT NULL PRIMARY KEY,
     sender TEXT NOT NULL,
     recipient TEXT NOT NULL,
-    contentType DATETIME NULL,
+    time DATETIME NOT NULL,
+    content_type string NULL,
     is_dkim BOOLEAN NULL
 );
 `
@@ -56,7 +57,8 @@ func (s idMilter) WriteToDBIfComplete() {
 	if s.mid == "" || s.from == "" || s.to == "" {
 		return
 	}
-	s.db.MustExec("INSERT OR REPLACE INTO smtp_record (mid, sender, recipient, time) VALUES ($1, $2, $3, $4)", s.mid, s.from, s.to, s.time)
+	s.db.MustExec("INSERT OR REPLACE INTO smtp_record (mid, sender, recipient, time, content_type, is_dkim) VALUES (?, ?, ?, ?, ?, ?)",
+		s.mid, s.from, s.to, s.time, s.contentType, s.isDKIM)
 	log.Printf("Wrote record (Message-Id: %s)", s.mid)
 }
 
